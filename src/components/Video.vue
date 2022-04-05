@@ -1,0 +1,632 @@
+<template>
+  <div class="container-fuild ConTainer_YouTube pt-4">
+    <div
+      class="d-flex align-items-center justify-content-between p-4 pb-0 Media"
+      v-if="error"
+    >
+      <router-link
+        :to="'/courses/' + List"
+        tag="button"
+        class="btn btn-primary pt-2 pb-2 fs-5 d-flex align-items-center justify-content-center"
+        style="width: 130px"
+      >
+        <font-awesome-icon icon="fa-solid fa-arrow-left" class="me-2" />
+        <span
+          v-if="$store.state.resource.ButtonBack == 'Back'"
+          style="margin-top: 3px"
+          >{{ $store.state.resource.ButtonBack }}</span
+        >
+        <span style="margin-top: -5px" v-else>{{
+          $store.state.resource.ButtonBack
+        }}</span>
+      </router-link>
+
+      <button
+        @click="Show_Question"
+        v-if="question"
+        :class="'btn btn-danger fs-5 ' + Class"
+      >
+        {{ $store.state.resource.Video.BtnAnswer }}
+      </button>
+      <div class="alert alert-primary mb-0 pt-2 pb-2" v-if="question == ''">
+        {{ $store.state.resource.Video.QuestionsNo }}
+      </div>
+    </div>
+    <div
+      class="row flex-row-reverse justify-content-center p-0 m-0"
+      v-if="error"
+    >
+      <section class="sectionVideo col-xl-8 col-xxl-7" id="sectionVideo">
+        <div class="VideoInfo">
+          <div class="d-flex align-items-start">
+            <h5 class="p-2 px-4" dir="rtl">{{ DataVideo.title }}</h5>
+          </div>
+          <hr class="m-0" />
+          <div class="VideoInfo2">
+            <div class="description p-4" v-if="description != ''">
+              <p style="white-space: pre-line; word-break: break-word">
+                {{ description }}
+              </p>
+              <button @click="Change" v-if="description.length >= 100">
+                {{ Button }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="sectionOtherVideo col-xl-4 col-xxl-4">
+        <div class="border border-primary p-3 border-4 rounded">
+          <router-link
+            :to="'/Watch/' + List + '/' + Divs.snippet.resourceId.videoId"
+            v-for="(Divs, index) in VidoesWatched"
+            :key="index"
+            :title="Divs.snippet.title"
+            ><div>
+              <img :src="Divs.snippet.thumbnails.medium.url" />
+              <div>
+                <h5>
+                  {{ Divs.snippet.title }}
+                </h5>
+              </div>
+            </div>
+          </router-link>
+          <router-link
+            :to="'/Watch/' + List + '/' + id"
+            v-for="(Divs, index) in Vidoes"
+            :key="index"
+            :title="Divs.snippet.title"
+            class="Nono"
+            ><div>
+              <img class="Img" :src="Divs.snippet.thumbnails.medium.url" />
+              <div>
+                <h5>
+                  {{ Divs.snippet.title }}
+                </h5>
+              </div>
+              <font-awesome-icon icon="fa-solid fa-lock" />
+            </div>
+          </router-link>
+        </div>
+      </section>
+    </div>
+    <div :class="ClassPrompt" v-if="error">
+      <div class="Over" @click="Cancel"></div>
+      <div>
+        <h3>{{ question }}</h3>
+        <textarea name="" v-model="Answer"></textarea>
+        <div>
+          <button class="btn btn-secondary" @click="Cancel">
+            {{ $store.state.resource.ButtonCancel }}
+            <font-awesome-icon
+              icon="fa-solid fa-arrow-right"
+              class="ms-2 me-2"
+            />
+          </button>
+          <button class="btn btn-primary" @click="Add_Answer">
+            {{ $store.state.resource.Video.AddQuestion }}
+            <font-awesome-icon icon="fa-solid fa-plus" class="ms-2 me-2" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+// import description from "@/components/description.vue";
+
+import axios from "axios";
+import $ from "jquery";
+// import questions from "../Data/questions.json";
+export default {
+  name: "Video",
+  components: {
+    // description,
+  },
+  props: ["id", "List"],
+  data: function () {
+    return {
+      DataVideo: "",
+      VidoesWatched: "",
+      Vidoes: 0,
+      lenght: 0,
+      Button: "Show Text",
+      description: "",
+      description2: "",
+      Class: "question",
+      question: "",
+      Answer: "",
+      error: true,
+      ClassPrompt: "Prompt",
+    };
+  },
+  methods: {
+    Show_Question() {
+      this.ClassPrompt = "Prompt active";
+    },
+    Cancel() {
+      this.ClassPrompt = "Prompt";
+    },
+    Add_Answer() {
+      this.ClassPrompt = "Prompt";
+      let Watch2 = JSON.parse(localStorage.getItem("Watchs"));
+      for (let i = 0; i < Watch2.length; i++) {
+        if (Watch2[i].ListID == this.List) {
+          Watch2[i].Videos[Watch2[i].Videos.length - 1].Answer = this.Answer;
+        }
+      }
+      localStorage.setItem("Watchs", JSON.stringify(Watch2));
+      this.Vidoes = "";
+      this.VidoesWatched = "";
+      let Watch;
+      if (localStorage.getItem("Watchs") != null) {
+        Watch = JSON.parse(localStorage.getItem("Watchs"));
+        for (let i = 0; i < Watch.length; i++) {
+          if (Watch[i].ListID == this.List) {
+            this.lenght = Watch[i].Videos.length;
+            axios
+              .get(
+                `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+              )
+              .then((Response) => {
+                for (let i = 0; i < Response.data.items.length; i++) {
+                  if (
+                    Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                    undefined
+                  ) {
+                    Response.data.items.splice(i, 1);
+                    for (let i = 0; i < Response.data.items.length; i++) {
+                      if (
+                        Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                        undefined
+                      ) {
+                        Response.data.items.splice(i, 1);
+                      }
+                    }
+                  }
+                }
+
+                if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
+                  if (
+                    Watch[i].Videos[Watch[i].Videos.length - 1].Answer != ""
+                  ) {
+                    this.Vidoes = Response.data.items.slice(
+                      this.lenght + 1,
+                      this.Vidoes.lenght
+                    );
+                    this.VidoesWatched = Response.data.items.slice(
+                      0,
+                      this.lenght + 1
+                    );
+                    this.Class = "question";
+                  } else {
+                    this.Vidoes = Response.data.items.slice(
+                      this.lenght,
+                      this.Vidoes.lenght
+                    );
+                    this.VidoesWatched = Response.data.items.slice(
+                      0,
+                      this.lenght
+                    );
+                    this.Class = "";
+                  }
+                } else {
+                  this.Vidoes = Response.data.items.slice(
+                    this.lenght + 1,
+                    this.Vidoes.lenght
+                  );
+                  this.VidoesWatched = Response.data.items.slice(
+                    0,
+                    this.lenght + 1
+                  );
+                  this.Class = "question";
+                }
+              });
+            break;
+          }
+        }
+      }
+    },
+    Change() {
+      if (this.Button == "Show Text") {
+        this.Button = "Hidden Text";
+        this.description = this.description2.slice(0, this.description2.length);
+      } else {
+        this.Button = "Show Text";
+        this.description = this.description2.slice(0, 100) + "...";
+      }
+    },
+    Gs() {
+      this.Vidoes = "";
+      this.VidoesWatched = "";
+      let Watch;
+      if (localStorage.getItem("Watchs") != null) {
+        Watch = JSON.parse(localStorage.getItem("Watchs"));
+        for (let i = 0; i < Watch.length; i++) {
+          if (Watch[i].ListID == this.List) {
+            this.lenght = Watch[i].Videos.length;
+            axios
+              .get(
+                `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+              )
+              .then((Response) => {
+                for (let i = 0; i < Response.data.items.length; i++) {
+                  if (
+                    Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                    undefined
+                  ) {
+                    Response.data.items.splice(i, 1);
+                    for (let i = 0; i < Response.data.items.length; i++) {
+                      if (
+                        Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                        undefined
+                      ) {
+                        Response.data.items.splice(i, 1);
+                      }
+                    }
+                  }
+                }
+
+                if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
+                  if (
+                    Watch[i].Videos[Watch[i].Videos.length - 1].Answer != ""
+                  ) {
+                    this.Vidoes = Response.data.items.slice(
+                      this.lenght + 1,
+                      this.Vidoes.lenght
+                    );
+                    this.VidoesWatched = Response.data.items.slice(
+                      0,
+                      this.lenght + 1
+                    );
+                    this.Class = "question";
+                  } else {
+                    this.Vidoes = Response.data.items.slice(
+                      this.lenght,
+                      this.Vidoes.lenght
+                    );
+                    this.VidoesWatched = Response.data.items.slice(
+                      0,
+                      this.lenght
+                    );
+                    this.Class = "";
+                  }
+                } else {
+                  this.Vidoes = Response.data.items.slice(
+                    this.lenght + 1,
+                    this.Vidoes.lenght
+                  );
+                  this.VidoesWatched = Response.data.items.slice(
+                    0,
+                    this.lenght + 1
+                  );
+                  this.Class = "question";
+                }
+              });
+            break;
+          }
+        }
+      }
+    },
+    load(ID) {
+      let Id = ID;
+      let IdList = this.List;
+      let player;
+      let sectionVideo = document.getElementById("sectionVideo");
+      let video = document.getElementById("video");
+      let DivVideo = document.createElement("div");
+      DivVideo.id = "video";
+      if (video != null) {
+        video.remove();
+        sectionVideo.prepend(DivVideo);
+      } else {
+        sectionVideo.prepend(DivVideo);
+      }
+      let Function = this;
+      function loadVideo() {
+        window.YT.ready(function () {
+          player = new window.YT.Player("video", {
+            height: "390",
+            width: "640",
+            videoId: Id,
+            events: {
+              onReady: onPlayerReady,
+              onStateChange: onPlayerStateChange,
+            },
+          });
+        });
+        let Watch = [];
+        function onPlayerReady(event) {
+          player.pauseVideo();
+          Watch = JSON.parse(localStorage.getItem("Watchs"));
+        }
+        function onPlayerStateChange(event) {
+          var refreshIntervalId;
+          // event.data != 2
+          // console.log(player.getPlayerState());
+
+          if (event.data === 0) {
+            for (let i = 0; i < Watch.length; i++) {
+              if (Watch[i].ListID == IdList) {
+                if (Watch[i].Videos.indexOf(Id) == -1) {
+                  Watch[i].Videos.push({ Id: Id, Answer: "" });
+                }
+                break;
+                // let VideoWatch = {
+                //   ListID: IdList,
+                //   Videos: [],
+                // };
+                // Watch.push(VideoWatch);
+                // console.log();
+                // localStorage.setItem("Watchs", JSON.stringify(Watch));
+              }
+            }
+            localStorage.setItem("Watchs", JSON.stringify(Watch));
+            Function.Gs();
+            Function.Class = "";
+          }
+        }
+      }
+
+      $(document).ready(function () {
+        $.getScript("https://www.youtube.com/iframe_api", function () {
+          loadVideo();
+        });
+      });
+    },
+  },
+
+  mounted() {
+    this.load(this.id);
+    // let Watch = JSON.parse(localStorage.getItem("Watchs"));
+    // for (let i = 0; i < Watch.length; i++) {
+    //   if (Watch[i].ListID == this.List) {
+    //     for (let x = 0; x < Watch[i].Videos.length; x++) {
+    //       if (Watch[i].Videos[x].Id == this.id) {
+    //         console.log(Watch[i].Videos[x]);
+    //       }
+    //     }
+    //   }
+    // }
+  },
+  created() {
+    if (localStorage.getItem("qusetions") != null) {
+      let questions = JSON.parse(localStorage.getItem("qusetions"));
+      for (let i = 0; i < questions.length; i++) {
+        if (questions[i].Id_Video == this.id) {
+          this.question = questions[i].qusetion;
+        }
+      }
+    }
+    axios
+      .get(
+        `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${this.id}&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+      )
+      .then((response) => {
+        this.DataVideo = response.data.items[0].snippet;
+        this.description =
+          response.data.items[0].snippet.description.length > 100
+            ? response.data.items[0].snippet.description.slice(0, 100) + "...."
+            : response.data.items[0].snippet.description;
+        this.description2 = response.data.items[0].snippet.description;
+        document.title = "History Makers | " + this.DataVideo.title;
+      });
+    let Watch;
+    if (localStorage.getItem("Watchs") != null) {
+      Watch = JSON.parse(localStorage.getItem("Watchs"));
+      for (let i = 0; i < Watch.length; i++) {
+        if (Watch[i].ListID == this.List) {
+          this.lenght = Watch[i].Videos.length;
+          axios
+            .get(
+              `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+            )
+            .then((Response) => {
+              for (let i = 0; i < Response.data.items.length; i++) {
+                if (
+                  Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                  undefined
+                ) {
+                  Response.data.items.splice(i, 1);
+                  for (let i = 0; i < Response.data.items.length; i++) {
+                    if (
+                      Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                      undefined
+                    ) {
+                      Response.data.items.splice(i, 1);
+                    }
+                  }
+                }
+              }
+
+              if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
+                if (Watch[i].Videos[Watch[i].Videos.length - 1].Answer != "") {
+                  this.Vidoes = Response.data.items.slice(
+                    this.lenght + 1,
+                    this.Vidoes.lenght
+                  );
+                  this.VidoesWatched = Response.data.items.slice(
+                    0,
+                    this.lenght + 1
+                  );
+                  this.Class = "question";
+                } else {
+                  this.Vidoes = Response.data.items.slice(
+                    this.lenght,
+                    this.Vidoes.lenght
+                  );
+                  this.VidoesWatched = Response.data.items.slice(
+                    0,
+                    this.lenght
+                  );
+                  this.Class = "";
+                }
+              } else {
+                this.Vidoes = Response.data.items.slice(
+                  this.lenght + 1,
+                  this.Vidoes.lenght
+                );
+                this.VidoesWatched = Response.data.items.slice(
+                  0,
+                  this.lenght + 1
+                );
+                this.Class = "question";
+              }
+            });
+          break;
+        }
+      }
+    } else {
+      this.error = false;
+    }
+    document.title = "History Makers | " + this.DataVideo.title;
+  },
+  watch: {
+    id: function (v) {
+      console.log(v);
+      this.load(v);
+      this.question = "";
+      let questions = JSON.parse(localStorage.getItem("qusetions"));
+
+      for (let i = 0; i < questions.length; i++) {
+        if (questions[i].Id_Video == v) {
+          this.question = questions[i].qusetion;
+        } else {
+          this.question = "";
+        }
+      }
+      this.Class = "question";
+      // let Watch = JSON.parse(localStorage.getItem("Watchs"));
+      // for (let i = 0; i < Watch.length; i++) {
+      //   if (Watch[i].ListID == this.List) {
+      //     for (let x = 0; x < Watch[i].Videos.length; x++) {
+      //       if (Watch[i].Videos[x].Id == this.id) {
+      //         console.log(Watch[i].Videos[x]);
+      //       }
+      //     }
+      //   }
+      // }
+      axios
+        .get(
+          `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${this.id}&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+        )
+        .then((response) => {
+          this.DataVideo = response.data.items[0].snippet;
+          this.description =
+            response.data.items[0].snippet.description.length > 100
+              ? response.data.items[0].snippet.description.slice(0, 100) +
+                "...."
+              : response.data.items[0].snippet.description;
+          this.description2 = response.data.items[0].snippet.description;
+          document.title = "History Makers | " + this.DataVideo.title;
+        });
+    },
+  },
+};
+</script>
+<style scoped>
+.alert-danger {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  font-size: 30px;
+}
+.question {
+  opacity: 0;
+}
+.Nono {
+  position: relative;
+  background: #000 !important;
+}
+
+.Nono img.Img,
+.Nono h5 {
+  opacity: 0.5;
+}
+.Nono svg {
+  font-size: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 500;
+  color: #000;
+}
+.Prompt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200000;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  translate: 0.4s;
+}
+.Prompt.active {
+  transform: scale(1);
+}
+.Prompt > div {
+  width: 400px;
+  height: auto;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px;
+}
+.Prompt > div h3 {
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+.Prompt > div textarea {
+  width: 100%;
+  height: 150px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  outline: 0;
+  padding: 20px 18px;
+}
+.Prompt > div > div {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.Prompt > div > div button {
+  width: calc(95% / 2);
+  margin-top: 10px;
+  padding: 10px !important;
+}
+.Prompt > div > div button:last-child {
+  margin-left: 10px;
+}
+@media (max-width: 500px) {
+  .Media {
+    flex-direction: column;
+  }
+  .Media button {
+    margin-bottom: 20px;
+  }
+}
+.Over {
+  background: #ffffff00 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: translate(0, 0) !important;
+  border-radius: 0 !important;
+  z-index: 4;
+  display: block !important;
+  box-shadow: none !important;
+}
+</style>

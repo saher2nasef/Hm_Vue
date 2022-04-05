@@ -1,0 +1,37 @@
+{
+  "ButtonCancel": "Cancel",
+  "ButtonEdit": "Edit",
+  "ButtonDel": "Delete",
+  "ButtonAdd": "Add",
+  "ButtonRead": "Read More",
+  "ButtonBack": "Back",
+  "Search": "Search",
+  "Buttons": {
+    "AddPost": "Add Post",
+    "Courses": "Courses",
+    "Bloger": "Bloger",
+    "Home": "Home",
+    "AddCourses": "Add Course",
+    "Title": "Title",
+    "describe": "description",
+    "Link": "Playlist URL",
+    "LinkVideo": "Enter the video link",
+    "Video_Url": "Video Url"
+  },
+  "Dir": "En",
+  "Comments": "Comments",
+  "Leave_comment": "Leave comment",
+  "Reply": "Reply",
+  "Leave_comment2": {
+    "Email": "Email",
+    "Name": "Name",
+    "Website": "Website",
+    "Message": "Message",
+    "post_comment": "post comment"
+  },
+  "Video": {
+    "QuestionsNo": "There are no questions for this video yet",
+    "AddQuestion": "Add Question",
+    "BtnAnswer": "Answer to watch the next lesson"
+  }
+}

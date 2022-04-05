@@ -1,0 +1,238 @@
+<template>
+  <form action="" method="POST" id="Form">
+    <h1>Rregister</h1>
+    <div class="Errors">
+      <div
+        class="alert fs-5 w-100 text-capitalize text-center alert-danger"
+        v-for="Error in Errors"
+        :key="Error"
+      >
+        {{ Error }}
+      </div>
+    </div>
+    <div
+      class="alert fs-4 w-100 text-capitalize text-center alert-success"
+      v-if="Good"
+    >
+      {{ Good }}
+    </div>
+    <div class="Input_DIv">
+      <span>Email</span>
+      <input type="Email" v-model="Email" required />
+    </div>
+
+    <div class="Input_DIv">
+      <span>Country</span>
+      <select class="input" v-model="Country">
+        <option
+          v-for="(Country, index) in Countries"
+          :key="index"
+          :value="Country.name"
+        >
+          {{ Country.name }}
+        </option>
+      </select>
+    </div>
+    <div class="Input_DIv">
+      <span>Age</span>
+      <input type="number" v-model="Age" />
+    </div>
+    <div class="Input_DIv">
+      <span>Password</span>
+      <input type="password" v-model="password" required />
+    </div>
+    <div class="Input_DIv">
+      <span>confirm password</span>
+      <input type="password" v-model="confirm_password" required />
+    </div>
+    <p>
+      <router-link to="/Login">Login</router-link>
+    </p>
+    <!-- <ButtonRegister
+      :Email="Email"
+      :Password="password"
+      :Con_Paasword="confirm_password"
+    /> -->
+    <button
+      @click="Register"
+      class="btn btn-primary fs-4 px-5 pt-1 pb-1"
+      type="button"
+    >
+      Register
+    </button>
+  </form>
+</template>
+<script>
+import identity from "./identity";
+export default {
+  name: "Register",
+  data() {
+    return {
+      Email: "",
+      password: "",
+      confirm_password: "",
+      Country: "",
+      Age: "",
+      Countries: 0,
+      Errors: [],
+      Good: "",
+    };
+  },
+  methods: {
+    validPaassowrd: function (value) {
+      const containsUppercase = /[A-Z]/.test(value);
+      const containsLowercase = /[a-z]/.test(value);
+      const containsNumber = /[0-9]/.test(value);
+      const containsSpecial = /[#?!@$%^&*-]/.test(value);
+      return {
+        Status:
+          containsUppercase &&
+          containsLowercase &&
+          containsNumber &&
+          containsSpecial,
+        Errors: {
+          containsUppercase: containsUppercase,
+          containsLowercase: containsLowercase,
+          containsNumber: containsNumber,
+          containsSpecial: containsSpecial,
+        },
+      };
+    },
+    VaildEmail(Value) {
+      var mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+      return Value.match(mailformat);
+    },
+    Register() {
+      if (
+        // this.Name != "" &&
+        this.Email != "" &&
+        this.password != "" &&
+        this.confirm_password != ""
+        // this.Country != ""
+      ) {
+        if (this.VaildEmail(this.Email)) {
+          this.Errors = [];
+          if (this.password == this.confirm_password) {
+            if (this.validPaassowrd(this.password).Status) {
+              identity.Register(this.Email, this.password).then((Val) => {
+                if (Val.errors != undefined) {
+                  this.Good = "";
+                  for (let i = 0; i < Val.errors.length; i++) {
+                    this.Errors.push(Val.errors[i]);
+                  }
+                } else {
+                  this.Good = "Success The Your Form";
+                }
+                // let This = this.$store.state;
+                // This.Token = Val.token;
+                // if (Val.rolesName.length == 0) {
+                //   This.The_State = "User";
+                //   document.cookie = `The_State=${This.The_State}`;
+                // }
+                // if (This.Token != "") {
+                //   This.Islogin = true;
+                // }
+                // document.cookie = `Id=${This.Token}`;
+                // this.$router.push("/");
+              });
+            } else if (this.validPaassowrd(this.password).Status == false) {
+              if (
+                !this.validPaassowrd(this.password).Errors.containsUppercase
+              ) {
+                this.Errors.push("Must contains Uppercase"); // containsUppercase
+              }
+              if (
+                !this.validPaassowrd(this.password).Errors.containsLowercase
+              ) {
+                this.Errors.push("Must contains Lowercase"); // containsLowercase
+              }
+              if (!this.validPaassowrd(this.password).Errors.containsNumber) {
+                this.Errors.push("Must contains Number"); // containsNumber
+              }
+              if (!this.validPaassowrd(this.password).Errors.containsSpecial) {
+                this.Errors.push("Must contains letters Special @#$"); // containsSpecial
+              }
+            }
+          } else {
+            this.Errors.push("The Passowrd 2 In = Password 1");
+            this.Good = "";
+          }
+        } else {
+          this.Errors = [];
+          this.Errors.push("Your Email Not Vaild");
+          this.Good = "";
+        }
+      } else {
+        this.Errors = [];
+        this.Errors.push("Plasea Enter All Inputs");
+        this.Good = "";
+      }
+    },
+  },
+};
+</script>
+<style scoped>
+main.Login {
+  margin-top: 70px;
+  padding: 20px;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  position: relative;
+}
+main.Login form {
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 20px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px 20px 20px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+main.Login form .Input_DIv {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+main.Login form .Input_DIv span {
+  font-size: 20px;
+  text-transform: capitalize !important;
+}
+main.Login form .Input_DIv input {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  outline: 0;
+  padding: 20px 18px;
+}
+.input {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  outline: 0;
+  padding: 0 10px;
+}
+main.Login form a {
+  font-size: 23px;
+  text-decoration: underline !important;
+}
+.Errors {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+</style>

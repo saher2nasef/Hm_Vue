@@ -1,0 +1,513 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap');
+/* Nice Scroll */
+
+
+.material-icons-outlined {
+    font-size: 25px;
+}
+
+/* Main Vaibales */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: .2s;
+    font-family: var(--Font);
+    text-decoration: none !important;
+}
+
+:root {
+    --BackGroundColor: #fff;
+    --BackGroundColor2: #f9f9f9;
+    --Color: #000;
+    --ColorMain: #d83b3b;
+    --Search1: #EEE;
+    --Search2: #000;
+    --Font: 'Almarai', sans-serif;
+    --Good: #198754;
+    --Bad: #dc3545;
+}
+
+.ConTainer {
+    width: 100%;
+}
+
+
+
+
+
+/* Start ConTainer_YouTube */
+
+.ConTainer_YouTube {
+    background-color: var(--BackGroundColor2);
+    width: 100%;
+    margin: 58px 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    color: var(--Color);
+    padding-bottom: 100px;
+}
+
+.ConTainer_YouTube .sectionVideo {
+    width: 66%;
+    height: 100%;
+    padding: 20px;
+}
+
+.ConTainer_YouTube .sectionVideo video,
+.ConTainer_YouTube .sectionVideo iframe,
+.ConTainer_YouTube .sectionVideo img {
+    width: 100%;
+    height: 450px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo {
+    width: 100%;
+    direction: rtl;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo h5 {
+    margin-top: 10px;
+    font-size: 20px;
+
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Date span:first-child::after {
+    content: '';
+    padding: 2px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: var(--Color);
+    margin: 0 5px 0 4px;
+    position: relative;
+    top: -3px;
+    left: -2px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Opinion {
+    direction: rtl;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Opinion button {
+    width: fit-content;
+    padding: 5px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--Color);
+    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Opinion button span {
+    margin-right: 10px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Opinion button:hover span {
+    color: var(--ColorMain);
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Opinion button i:hover {
+    color: var(--ColorMain);
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: row-reverse;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle .Channle_Child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle .Channle_Child img {
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle .Channle_Child div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle .Channle_Child div a {
+    text-decoration: none;
+    color: var(--Color);
+    font-family: var(--Font);
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle .Channle_Child div a:hover {
+    color: var(--ColorMain);
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle #Subscribe {
+    padding: 8px 25px;
+    border-radius: 2px;
+    border: 0;
+    color: var(--Search1);
+    transition: .4s;
+    border-radius: 5px;
+    background-color: var(--ColorMain);
+    font-size: 17px;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle #Subscribe:hover {
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .description {
+    font-size: 15px;
+    direction: rtl;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .description p {
+    height: auto;
+    max-height: 160px;
+    overflow: auto !important;
+}
+
+.ConTainer_YouTube .sectionVideo .VideoInfo2 .description button {
+    background-color: transparent;
+    color: var(--ColorMain);
+    border: 0;
+}
+
+
+
+.ConTainer_YouTube .sectionOtherVideo {
+    width: 34%;
+    padding: 10px 10px 0 20px;
+    margin-top: 10px;
+    display: block;
+}
+
+.ConTainer_YouTube .sectionOtherVideo>div {
+    height: 450px;
+    overflow: auto;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    margin-bottom: 10px;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: row-reverse;
+    margin: 10px 0;
+    position: relative;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div img {
+    width: 50%;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div span {
+    background-color: transparent;
+    width: 50%;
+    height: 93px;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div {
+    margin-right: 10px;
+    width: 50%;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div h5 {
+    font-size: 15px;
+    font-weight: 400;
+    direction: rtl;
+    margin: 0 0 5px 0;
+    color: #000;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div>span {
+    width: 100%;
+    height: 25px;
+    border-radius: 5px;
+    display: block;
+    background: var(--Search1);
+    margin: 5px 0;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div>a.a {
+    width: 50%;
+    height: 25px;
+    border-radius: 5px;
+    display: block;
+    background: transparent;
+    margin: 5px 0 0 auto;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div a {
+    direction: rtl;
+    text-align: right;
+    display: block;
+    text-decoration: none;
+    color: var(--ColorMain);
+    font-weight: 700;
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div h6 {
+    direction: rtl;
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: #000;
+}
+
+.ConTainer_YouTube .sectionOtherVideo a>div>div h6 span:first-child::after {
+    content: '';
+    padding: 2px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: var(--Color);
+    margin: 0 5px 0 4px;
+    position: relative;
+    top: -3px;
+    left: -2px;
+}
+
+
+/* End ConTainer_YouTube */
+
+@media (max-width:1100px) {
+    .ConTainer header .Center {
+        width: 50%;
+    }
+
+    .ConTainer header .Left {
+        width: 30%;
+    }
+}
+
+@media (max-width:1050px) {
+    .ConTainer_YouTube {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo {
+        width: 100%;
+        height: 450px !important;
+    }
+
+    .ConTainer_YouTube .sectionVideo {
+        width: 100%;
+        height: auto !important;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo a>div {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        margin: 10px 0;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo a>div img {
+        width: 30%;
+    }
+}
+
+@media (max-width:950px) {
+    .ConTainer header .Center {
+        width: 40%;
+    }
+
+    .ConTainer header .Left {
+        width: 30%;
+    }
+
+    .ConTainer header .Right {
+        width: 30%;
+    }
+}
+
+@media (max-width:842px) {
+    .ConTainer header .Center {
+        width: 35%;
+    }
+
+    .ConTainer header .Left {
+        width: 35%;
+    }
+
+    .ConTainer header .Right {
+        width: 30%;
+    }
+}
+
+@media (max-width:650px) {
+    .ConTainer header {
+        justify-content: flex-start;
+    }
+
+    .ConTainer header .Center {
+        width: fit-content;
+    }
+
+    .ConTainer header .Center .BarSearch {
+        display: none;
+    }
+
+    .ConTainer header .Left {
+        width: 40%;
+    }
+
+    .ConTainer header .Right {
+        width: 45%;
+        margin-left: auto;
+        display: inline-flex;
+    }
+
+    .ConTainer header .Center .search {
+        transform: scale(1);
+    }
+
+    .ConTainer header .Left button,
+    .ConTainer header .Center button {
+        margin-right: 10px !important;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width:600px) {
+    .ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom {
+        display: flex;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: center;
+        margin-top: 28px;
+        flex-direction: column;
+    }
+
+    .ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom>div {
+        margin-bottom: 10px;
+    }
+
+    .ConTainer_YouTube .sectionVideo video,
+    .ConTainer_YouTube .sectionVideo iframe,
+    .ConTainer_YouTube .sectionVideo img {
+        width: 100%;
+        height: 300px;
+    }
+}
+
+@media (max-width:520px) {
+    .ConTainer header .Right {
+        width: 50%;
+        margin-left: auto;
+        display: inline-flex;
+    }
+
+    .ConTainer header .Left {
+        width: 50%;
+    }
+
+    .ConTainer header .Center {
+        display: none;
+    }
+
+    .ConTainer header .Left button,
+    .ConTainer header .Center button {
+        margin-right: 10px !important;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        background-color: transparent;
+    }
+
+    .th,
+    .video,
+    .microphone {
+        display: none;
+    }
+
+    .ConTainer header .Left .search {
+        display: block;
+    }
+
+    .ConTainer header .Center .search {
+        display: none;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo {
+        padding: 5px;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo a>div {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        margin: 10px 0;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo a>div img {
+        width: 100%;
+    }
+
+    .ConTainer_YouTube .sectionOtherVideo a>div div {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .ConTainer_YouTube .sectionVideo video,
+    .ConTainer_YouTube .sectionVideo iframe,
+    .ConTainer_YouTube .sectionVideo img {
+        width: 100%;
+        height: 300px;
+    }
+}
+
+@media (max-width:450px) {
+    .ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
+
+    .ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle>div {
+        margin-bottom: 10px;
+    }
+
+    .ConTainer_YouTube .sectionVideo .VideoInfo2 .description {
+        margin: 10px 0;
+    }
+
+    .ConTainer_YouTube .sectionVideo video,
+    .ConTainer_YouTube .sectionVideo iframe,
+    .ConTainer_YouTube .sectionVideo img {
+        width: 100%;
+        height: 200px;
+    }
+}

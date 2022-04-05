@@ -1,0 +1,37 @@
+{
+  "ButtonCancel": "الغاء",
+  "ButtonEdit": "تعديل",
+  "ButtonDel": "حزف",
+  "ButtonAdd": "اضافة",
+  "ButtonRead": "قراءة المزيد",
+  "ButtonBack": "رجوع",
+  "Search": "بحث",
+  "Buttons": {
+    "AddPost": "اضافة منشور",
+    "Courses": "كورسات",
+    "Bloger": "مدونة",
+    "Home": "الرئيسية",
+    "AddCourses": "انشاء كورس",
+    "Title": "عنوان",
+    "describe": "الوصف",
+    "Link": "URL قائمة التشغيل",
+    "LinkVideo": "ادخل رابط الفيديو",
+    "Video_Url": "رابط الفيديو"
+  },
+  "Dir": "Ar",
+  "Comments": "تعليقات",
+  "Leave_comment": "اترك تعليقا",
+  "Reply": "رد",
+  "Leave_comment2": {
+    "Email": "بريد الالكتروني",
+    "Name": "اسم",
+    "Website": "موقع إلكتروني",
+    "Message": "رسالة",
+    "post_comment": "أضف تعليقا"
+  },
+  "Video": {
+    "QuestionsNo": "لا توجد أسئلة لهذا الفيديو حتى الآن",
+    "AddQuestion": "أضف سؤالا",
+    "BtnAnswer": "الاجابة لمشاهدة الدرس القادم"
+  }
+}
