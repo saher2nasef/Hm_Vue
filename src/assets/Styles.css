@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap");
 /* Nice Scroll */
-
 
 .material-icons-outlined {
     font-size: 25px;
@@ -12,7 +11,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: .2s;
+    transition: 0.2s;
     font-family: var(--Font);
     text-decoration: none !important;
 }
@@ -22,9 +21,9 @@
     --BackGroundColor2: #f9f9f9;
     --Color: #000;
     --ColorMain: #d83b3b;
-    --Search1: #EEE;
+    --Search1: #eee;
     --Search2: #000;
-    --Font: 'Almarai', sans-serif;
+    --Font: "Almarai", sans-serif;
     --Good: #198754;
     --Bad: #dc3545;
 }
@@ -33,9 +32,9 @@
     width: 100%;
 }
 
-
-
-
+.BoxShadow {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
 
 /* Start ConTainer_YouTube */
 
@@ -62,6 +61,8 @@
 .ConTainer_YouTube .sectionVideo img {
     width: 100%;
     height: 450px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    border-radius: 5px;
 }
 
 .ConTainer_YouTube .sectionVideo .VideoInfo {
@@ -72,7 +73,6 @@
 .ConTainer_YouTube .sectionVideo .VideoInfo h5 {
     margin-top: 10px;
     font-size: 20px;
-
 }
 
 .ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom {
@@ -84,7 +84,7 @@
 }
 
 .ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom .Date span:first-child::after {
-    content: '';
+    content: "";
     padding: 2px;
     border-radius: 50%;
     display: inline-block;
@@ -166,7 +166,7 @@
     border-radius: 2px;
     border: 0;
     color: var(--Search1);
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 5px;
     background-color: var(--ColorMain);
     font-size: 17px;
@@ -174,9 +174,10 @@
 
 .ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle #Subscribe:hover {
     color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+        rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+        rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
-
 
 .ConTainer_YouTube .sectionVideo .VideoInfo2 .description {
     font-size: 15px;
@@ -194,8 +195,6 @@
     color: var(--ColorMain);
     border: 0;
 }
-
-
 
 .ConTainer_YouTube .sectionOtherVideo {
     width: 34%;
@@ -282,7 +281,7 @@
 }
 
 .ConTainer_YouTube .sectionOtherVideo a>div>div h6 span:first-child::after {
-    content: '';
+    content: "";
     padding: 2px;
     border-radius: 50%;
     display: inline-block;
@@ -293,10 +292,9 @@
     left: -2px;
 }
 
-
 /* End ConTainer_YouTube */
 
-@media (max-width:1100px) {
+@media (max-width: 1100px) {
     .ConTainer header .Center {
         width: 50%;
     }
@@ -306,7 +304,7 @@
     }
 }
 
-@media (max-width:1050px) {
+@media (max-width: 1050px) {
     .ConTainer_YouTube {
         flex-direction: column;
         justify-content: flex-start;
@@ -336,7 +334,7 @@
     }
 }
 
-@media (max-width:950px) {
+@media (max-width: 950px) {
     .ConTainer header .Center {
         width: 40%;
     }
@@ -350,7 +348,7 @@
     }
 }
 
-@media (max-width:842px) {
+@media (max-width: 842px) {
     .ConTainer header .Center {
         width: 35%;
     }
@@ -364,7 +362,7 @@
     }
 }
 
-@media (max-width:650px) {
+@media (max-width: 650px) {
     .ConTainer header {
         justify-content: flex-start;
     }
@@ -391,16 +389,9 @@
         transform: scale(1);
     }
 
-    .ConTainer header .Left button,
-    .ConTainer header .Center button {
-        margin-right: 10px !important;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .ConTainer_YouTube .sectionVideo .VideoInfo .VideoBottom {
         display: flex;
         width: 100%;
@@ -422,7 +413,7 @@
     }
 }
 
-@media (max-width:520px) {
+@media (max-width: 520px) {
     .ConTainer header .Right {
         width: 50%;
         margin-left: auto;
@@ -437,14 +428,6 @@
         display: none;
     }
 
-    .ConTainer header .Left button,
-    .ConTainer header .Center button {
-        margin-right: 10px !important;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
-        background-color: transparent;
-    }
 
     .th,
     .video,
@@ -490,7 +473,7 @@
     }
 }
 
-@media (max-width:450px) {
+@media (max-width: 450px) {
     .ConTainer_YouTube .sectionVideo .VideoInfo2 .Channle {
         flex-direction: column-reverse;
         align-items: flex-start;

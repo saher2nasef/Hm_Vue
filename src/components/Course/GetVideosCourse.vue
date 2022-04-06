@@ -43,7 +43,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 import Videos from "@/components/Videos.vue";
 import CoursesServices from "./CoursesServices";
 export default {
@@ -63,7 +62,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$store.state.Token);
     CoursesServices.GetVideosCourse(this.id, this.$store.state.Token).then(
       (Val) => {
         this.VidoesWatched = Val.VidoesWatched;

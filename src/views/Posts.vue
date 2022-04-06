@@ -275,6 +275,7 @@ article img {
 }
 .index-post .post-content .post-snippet {
   font-size: 20px;
+  white-space: pre-line;
 }
 .index-post .post-header .post-title {
   font-size: 30px;
@@ -366,7 +367,7 @@ article,
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   transition: 0.5s;
   padding: 30px;

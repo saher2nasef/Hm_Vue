@@ -4,13 +4,26 @@ var Data = "";
 const Url = "http://josephnasef-001-site1.ctempurl.com/Api/Post/";
 
 export default class Bloger {
+  static GetDataFromToken(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  }
   static AddPost(Title, describe, Id) {
     if (Title != "" && describe != "" && Id != "") {
       axios
         .post(Url, {
           Title: Title,
           Body: describe,
-          UserId: Id,
+          UserId: this.GetDataFromToken(Id).Id,
         })
         .then(function (response) {
           console.log(response.data);
@@ -25,7 +38,7 @@ export default class Bloger {
       .put(Url + Id, {
         Title: Text,
         Body: body,
-        UserId: UserId,
+        UserId: this.GetDataFromToken(UserId).Id,
       })
       .then(function (response) {
         console.log(response.data);
@@ -45,19 +58,7 @@ export default class Bloger {
       return response.data;
     });
   }
-  static GetDataFromToken(token) {
-    var base64Url = token.split(".")[1];
-    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    var jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map(function (c) {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join("")
-    );
-    return JSON.parse(jsonPayload);
-  }
+
   static WhoRead(Token, PostId) {
     var Data = this.GetDataFromToken(Token);
     axios

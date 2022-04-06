@@ -327,11 +327,12 @@ export default {
   created() {
     Bloger.GetList().then((val) => {
       this.Saher = val;
+      console.log(val);
     });
   },
   methods: {
     WhoEntred(id) {
-      Bloger.WhoRead(this.$store.state.IdUser, id);
+      // Bloger.WhoRead(this.$store.state.IdUser, id);
       this.$router.push(`Posts/${id}`);
     },
     Edit: function (title, Body, image, id, id2) {

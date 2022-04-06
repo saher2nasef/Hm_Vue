@@ -55,11 +55,11 @@
         </div>
       </section>
       <section class="sectionOtherVideo col-xl-4 col-xxl-4">
-        <div class="border border-primary p-3 border-4 rounded">
+        <div class="border BoxShadow PlayListVideo p-3 border-4 rounded">
           <router-link
             :to="'/Watch/' + List + '/' + Divs.snippet.resourceId.videoId"
-            v-for="(Divs, index) in VidoesWatched"
-            :key="index"
+            v-for="(Divs, i) in VidoesWatched"
+            :key="'A,' + i"
             :title="Divs.snippet.title"
             ><div>
               <img :src="Divs.snippet.thumbnails.medium.url" />
@@ -72,8 +72,8 @@
           </router-link>
           <router-link
             :to="'/Watch/' + List + '/' + id"
-            v-for="(Divs, index) in Vidoes"
-            :key="index"
+            v-for="(Divs, i) in Vidoes"
+            :key="'B,' + i"
             :title="Divs.snippet.title"
             class="Nono"
             ><div>
@@ -103,7 +103,7 @@
             />
           </button>
           <button class="btn btn-primary" @click="Add_Answer">
-            {{ $store.state.resource.Video.AddQuestion }}
+            {{ $store.state.resource.Video.AddAnswer }}
             <font-awesome-icon icon="fa-solid fa-plus" class="ms-2 me-2" />
           </button>
         </div>
@@ -114,7 +114,7 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 // import description from "@/components/description.vue";
-
+const Url = "http://josephnasef-001-site1.ctempurl.com/Api/Courses/";
 import axios from "axios";
 import $ from "jquery";
 // import questions from "../Data/questions.json";
@@ -138,93 +138,186 @@ export default {
       Answer: "",
       error: true,
       ClassPrompt: "Prompt",
+      Id_Question: "",
     };
   },
   methods: {
-    Show_Question() {
-      this.ClassPrompt = "Prompt active";
+    GetDataFromToken(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      var jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+      return JSON.parse(jsonPayload);
     },
-    Cancel() {
-      this.ClassPrompt = "Prompt";
+    GetVideoswatched(UserId, PlayListId) {
+      return axios
+        .post(
+          `http://josephnasef-001-site1.ctempurl.com/Api/Courses/watchedVideos?UserId=${UserId}&PlayListId=${PlayListId}`
+        )
+        .then((Res) => {
+          return Res.data;
+        })
+        .catch((error) => {
+          return { error: error.response.data };
+        });
     },
-    Add_Answer() {
-      this.ClassPrompt = "Prompt";
-      let Watch2 = JSON.parse(localStorage.getItem("Watchs"));
-      for (let i = 0; i < Watch2.length; i++) {
-        if (Watch2[i].ListID == this.List) {
-          Watch2[i].Videos[Watch2[i].Videos.length - 1].Answer = this.Answer;
-        }
-      }
-      localStorage.setItem("Watchs", JSON.stringify(Watch2));
-      this.Vidoes = "";
-      this.VidoesWatched = "";
-      let Watch;
-      if (localStorage.getItem("Watchs") != null) {
-        Watch = JSON.parse(localStorage.getItem("Watchs"));
-        for (let i = 0; i < Watch.length; i++) {
-          if (Watch[i].ListID == this.List) {
-            this.lenght = Watch[i].Videos.length;
-            axios
-              .get(
-                `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
-              )
-              .then((Response) => {
+    GetVideosCourse(ID, Token) {
+      let PlayListId = "";
+      return axios.get(Url + ID).then((response) => {
+        PlayListId = response.data.youtubeListId;
+        let This = this;
+        return axios
+          .get(
+            `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PlayListId}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+          )
+          .then((Response) => {
+            for (let i = 0; i < Response.data.items.length; i++) {
+              if (
+                Response.data.items[i].snippet.videoOwnerChannelTitle ==
+                undefined
+              ) {
+                Response.data.items.splice(i, 1);
                 for (let i = 0; i < Response.data.items.length; i++) {
                   if (
                     Response.data.items[i].snippet.videoOwnerChannelTitle ==
                     undefined
                   ) {
                     Response.data.items.splice(i, 1);
-                    for (let i = 0; i < Response.data.items.length; i++) {
-                      if (
-                        Response.data.items[i].snippet.videoOwnerChannelTitle ==
-                        undefined
-                      ) {
-                        Response.data.items.splice(i, 1);
+                  }
+                }
+              }
+            }
+
+            return This.GetVideoswatched(
+              Token != "" ? This.GetDataFromToken(Token).Id : "No",
+              PlayListId
+            )
+              .then((Val) => {
+                let Watch = {
+                  Videos: [],
+                };
+                let VideosWatchLength = 0;
+                for (let i = 0; i < Val.length; i++) {
+                  Watch.Videos.push(Val[i]);
+                }
+                for (let i = 0; i < Watch.Videos.length; i++) {
+                  if (
+                    Watch.Videos[i].videoId ===
+                    Response.data.items[i].snippet.resourceId.videoId
+                  ) {
+                    if (Watch.Videos[i].questionId != 0) {
+                      if (Watch.Videos[i].isAnsweared) {
+                        VideosWatchLength++;
                       }
+                    } else {
+                      VideosWatchLength++;
                     }
                   }
                 }
-
-                if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
-                  if (
-                    Watch[i].Videos[Watch[i].Videos.length - 1].Answer != ""
-                  ) {
-                    this.Vidoes = Response.data.items.slice(
-                      this.lenght + 1,
-                      this.Vidoes.lenght
-                    );
-                    this.VidoesWatched = Response.data.items.slice(
-                      0,
-                      this.lenght + 1
-                    );
-                    this.Class = "question";
-                  } else {
-                    this.Vidoes = Response.data.items.slice(
-                      this.lenght,
-                      this.Vidoes.lenght
-                    );
-                    this.VidoesWatched = Response.data.items.slice(
-                      0,
-                      this.lenght
-                    );
-                    this.Class = "";
-                  }
-                } else {
-                  this.Vidoes = Response.data.items.slice(
-                    this.lenght + 1,
-                    this.Vidoes.lenght
-                  );
-                  this.VidoesWatched = Response.data.items.slice(
+                return {
+                  Vidoes: Response.data.items.slice(
+                    VideosWatchLength + 1,
+                    Response.data.items.length
+                  ),
+                  VidoesWatched: Response.data.items.slice(
                     0,
-                    this.lenght + 1
-                  );
-                  this.Class = "question";
-                }
+                    VideosWatchLength + 1
+                  ),
+                };
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            break;
+          });
+      });
+    },
+    LoadORWatchFuntion() {
+      axios
+        .get(
+          `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${this.id}&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
+        )
+        .then((response) => {
+          this.DataVideo = response.data.items[0].snippet;
+          this.description =
+            response.data.items[0].snippet.description.length > 100
+              ? response.data.items[0].snippet.description.slice(0, 100) +
+                "...."
+              : response.data.items[0].snippet.description;
+          this.description2 = response.data.items[0].snippet.description;
+          document.title = "History Makers | " + this.DataVideo.title;
+        });
+      axios
+        .get(
+          `http://josephnasef-001-site1.ctempurl.com/api/Question/GetQuestion?VideoId=${this.id}&UserId`
+        )
+        .then((val) => {
+          this.question = val.data.content;
+        });
+    },
+    Show_Question() {
+      this.ClassPrompt = "Prompt active";
+      // this.Id_Question
+      this.GetVideoswatched(
+        this.GetDataFromToken(this.$store.state.Token).Id,
+        this.List
+      )
+        .then((Val) => {
+          for (let i = 0; i < Val.length; i++) {
+            if (Val[i].videoId == this.id) {
+              this.Id_Question = Val[i].questionId;
+            }
           }
-        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    Get_Question(Token, PlayListId) {
+      return this.GetVideoswatched(
+        Token != "" ? this.GetDataFromToken(Token).Id : "No",
+        PlayListId
+      )
+        .then((Val) => {
+          return Val;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    Cancel() {
+      this.ClassPrompt = "Prompt";
+    },
+    Add_Answer() {
+      this.ClassPrompt = "Prompt";
+      if (this.Answer != "") {
+        axios
+          .post(
+            "http://josephnasef-001-site1.ctempurl.com/api/Question/AnswearQustion",
+            {
+              QustionId: this.Id_Question,
+              UserId: this.GetDataFromToken(this.$store.state.Token).Id,
+              VideoId: this.id,
+              Answear: this.Answer,
+            }
+          )
+          .then((val) => {
+            console.log("ss");
+            this.GetVideosCourse(this.List, this.$store.state.Token).then(
+              (val) => {
+                this.Vidoes = val.Vidoes;
+                this.VidoesWatched = val.VidoesWatched;
+              }
+            );
+            this.LoadORWatchFuntion();
+          });
+      } else {
+        alert("Please Enter Your Answer");
       }
     },
     Change() {
@@ -239,74 +332,6 @@ export default {
     Gs() {
       this.Vidoes = "";
       this.VidoesWatched = "";
-      let Watch;
-      if (localStorage.getItem("Watchs") != null) {
-        Watch = JSON.parse(localStorage.getItem("Watchs"));
-        for (let i = 0; i < Watch.length; i++) {
-          if (Watch[i].ListID == this.List) {
-            this.lenght = Watch[i].Videos.length;
-            axios
-              .get(
-                `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
-              )
-              .then((Response) => {
-                for (let i = 0; i < Response.data.items.length; i++) {
-                  if (
-                    Response.data.items[i].snippet.videoOwnerChannelTitle ==
-                    undefined
-                  ) {
-                    Response.data.items.splice(i, 1);
-                    for (let i = 0; i < Response.data.items.length; i++) {
-                      if (
-                        Response.data.items[i].snippet.videoOwnerChannelTitle ==
-                        undefined
-                      ) {
-                        Response.data.items.splice(i, 1);
-                      }
-                    }
-                  }
-                }
-
-                if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
-                  if (
-                    Watch[i].Videos[Watch[i].Videos.length - 1].Answer != ""
-                  ) {
-                    this.Vidoes = Response.data.items.slice(
-                      this.lenght + 1,
-                      this.Vidoes.lenght
-                    );
-                    this.VidoesWatched = Response.data.items.slice(
-                      0,
-                      this.lenght + 1
-                    );
-                    this.Class = "question";
-                  } else {
-                    this.Vidoes = Response.data.items.slice(
-                      this.lenght,
-                      this.Vidoes.lenght
-                    );
-                    this.VidoesWatched = Response.data.items.slice(
-                      0,
-                      this.lenght
-                    );
-                    this.Class = "";
-                  }
-                } else {
-                  this.Vidoes = Response.data.items.slice(
-                    this.lenght + 1,
-                    this.Vidoes.lenght
-                  );
-                  this.VidoesWatched = Response.data.items.slice(
-                    0,
-                    this.lenght + 1
-                  );
-                  this.Class = "question";
-                }
-              });
-            break;
-          }
-        }
-      }
     },
     load(ID) {
       let Id = ID;
@@ -322,7 +347,7 @@ export default {
       } else {
         sectionVideo.prepend(DivVideo);
       }
-      let Function = this;
+      let THIS = this;
       function loadVideo() {
         window.YT.ready(function () {
           player = new window.YT.Player("video", {
@@ -335,10 +360,8 @@ export default {
             },
           });
         });
-        let Watch = [];
         function onPlayerReady(event) {
           player.pauseVideo();
-          Watch = JSON.parse(localStorage.getItem("Watchs"));
         }
         function onPlayerStateChange(event) {
           var refreshIntervalId;
@@ -346,28 +369,36 @@ export default {
           // console.log(player.getPlayerState());
 
           if (event.data === 0) {
-            for (let i = 0; i < Watch.length; i++) {
-              if (Watch[i].ListID == IdList) {
-                if (Watch[i].Videos.indexOf(Id) == -1) {
-                  Watch[i].Videos.push({ Id: Id, Answer: "" });
-                }
-                break;
-                // let VideoWatch = {
-                //   ListID: IdList,
-                //   Videos: [],
-                // };
-                // Watch.push(VideoWatch);
-                // console.log();
-                // localStorage.setItem("Watchs", JSON.stringify(Watch));
+            THIS.GetVideosCourse(THIS.List, THIS.$store.state.Token).then(
+              (Val) => {
+                THIS.Vidoes = Val.Vidoes;
+                THIS.VidoesWatched = Val.VidoesWatched;
+                // Saher_nasef123@
               }
-            }
-            localStorage.setItem("Watchs", JSON.stringify(Watch));
-            Function.Gs();
-            Function.Class = "";
+            );
+            THIS.GetVideoswatched(
+              THIS.GetDataFromToken(THIS.$store.state.Token).Id,
+              THIS.List
+            ).then((Res) => {
+              console.log(Res);
+            });
+            THIS.Class = "";
+            // http://josephnasef-001-site1.ctempurl.com/api/Question/1
+            axios
+              .post(
+                "http://josephnasef-001-site1.ctempurl.com/Api/Courses/watched",
+                {
+                  UserId: THIS.GetDataFromToken(THIS.$store.state.Token).Id,
+                  PlayListId: THIS.List,
+                  VideoId: THIS.id,
+                }
+              )
+              .then((val) => {
+                console.log(val);
+              });
           }
         }
       }
-
       $(document).ready(function () {
         $.getScript("https://www.youtube.com/iframe_api", function () {
           loadVideo();
@@ -375,151 +406,43 @@ export default {
       });
     },
   },
-
   mounted() {
     this.load(this.id);
-    // let Watch = JSON.parse(localStorage.getItem("Watchs"));
-    // for (let i = 0; i < Watch.length; i++) {
-    //   if (Watch[i].ListID == this.List) {
-    //     for (let x = 0; x < Watch[i].Videos.length; x++) {
-    //       if (Watch[i].Videos[x].Id == this.id) {
-    //         console.log(Watch[i].Videos[x]);
-    //       }
-    //     }
-    //   }
-    // }
   },
   created() {
-    if (localStorage.getItem("qusetions") != null) {
-      let questions = JSON.parse(localStorage.getItem("qusetions"));
-      for (let i = 0; i < questions.length; i++) {
-        if (questions[i].Id_Video == this.id) {
-          this.question = questions[i].qusetion;
+    this.Get_Question(this.$store.state.Token, this.List).then((Val) => {
+      for (let i = 0; i < Val.length; i++) {
+        if (Val[i].videoId == this.id) {
+          if (Val[i].isAnsweared) {
+            this.Class = "Good";
+          } else {
+            this.Class = "";
+          }
         }
       }
-    }
-    axios
-      .get(
-        `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${this.id}&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
-      )
-      .then((response) => {
-        this.DataVideo = response.data.items[0].snippet;
-        this.description =
-          response.data.items[0].snippet.description.length > 100
-            ? response.data.items[0].snippet.description.slice(0, 100) + "...."
-            : response.data.items[0].snippet.description;
-        this.description2 = response.data.items[0].snippet.description;
-        document.title = "History Makers | " + this.DataVideo.title;
-      });
-    let Watch;
-    if (localStorage.getItem("Watchs") != null) {
-      Watch = JSON.parse(localStorage.getItem("Watchs"));
-      for (let i = 0; i < Watch.length; i++) {
-        if (Watch[i].ListID == this.List) {
-          this.lenght = Watch[i].Videos.length;
-          axios
-            .get(
-              `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.List}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
-            )
-            .then((Response) => {
-              for (let i = 0; i < Response.data.items.length; i++) {
-                if (
-                  Response.data.items[i].snippet.videoOwnerChannelTitle ==
-                  undefined
-                ) {
-                  Response.data.items.splice(i, 1);
-                  for (let i = 0; i < Response.data.items.length; i++) {
-                    if (
-                      Response.data.items[i].snippet.videoOwnerChannelTitle ==
-                      undefined
-                    ) {
-                      Response.data.items.splice(i, 1);
-                    }
-                  }
-                }
-              }
-
-              if (Watch[i].Videos[Watch[i].Videos.length - 1] != undefined) {
-                if (Watch[i].Videos[Watch[i].Videos.length - 1].Answer != "") {
-                  this.Vidoes = Response.data.items.slice(
-                    this.lenght + 1,
-                    this.Vidoes.lenght
-                  );
-                  this.VidoesWatched = Response.data.items.slice(
-                    0,
-                    this.lenght + 1
-                  );
-                  this.Class = "question";
-                } else {
-                  this.Vidoes = Response.data.items.slice(
-                    this.lenght,
-                    this.Vidoes.lenght
-                  );
-                  this.VidoesWatched = Response.data.items.slice(
-                    0,
-                    this.lenght
-                  );
-                  this.Class = "";
-                }
-              } else {
-                this.Vidoes = Response.data.items.slice(
-                  this.lenght + 1,
-                  this.Vidoes.lenght
-                );
-                this.VidoesWatched = Response.data.items.slice(
-                  0,
-                  this.lenght + 1
-                );
-                this.Class = "question";
-              }
-            });
-          break;
-        }
-      }
-    } else {
-      this.error = false;
-    }
-    document.title = "History Makers | " + this.DataVideo.title;
+    });
+    this.LoadORWatchFuntion();
+    this.GetVideosCourse(this.List, this.$store.state.Token).then((Val) => {
+      this.Vidoes = Val.Vidoes;
+      this.VidoesWatched = Val.VidoesWatched;
+    });
   },
   watch: {
     id: function (v) {
-      console.log(v);
-      this.load(v);
-      this.question = "";
-      let questions = JSON.parse(localStorage.getItem("qusetions"));
-
-      for (let i = 0; i < questions.length; i++) {
-        if (questions[i].Id_Video == v) {
-          this.question = questions[i].qusetion;
-        } else {
-          this.question = "";
+      this.Get_Question(this.$store.state.Token, this.List).then((Val) => {
+        for (let i = 0; i < Val.length; i++) {
+          if (Val[i].videoId == v) {
+            if (Val[i].isAnsweared) {
+              this.Class = "Good";
+            } else {
+              this.Class = "";
+            }
+          }
         }
-      }
+      });
+      this.load(v);
       this.Class = "question";
-      // let Watch = JSON.parse(localStorage.getItem("Watchs"));
-      // for (let i = 0; i < Watch.length; i++) {
-      //   if (Watch[i].ListID == this.List) {
-      //     for (let x = 0; x < Watch[i].Videos.length; x++) {
-      //       if (Watch[i].Videos[x].Id == this.id) {
-      //         console.log(Watch[i].Videos[x]);
-      //       }
-      //     }
-      //   }
-      // }
-      axios
-        .get(
-          `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${this.id}&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
-        )
-        .then((response) => {
-          this.DataVideo = response.data.items[0].snippet;
-          this.description =
-            response.data.items[0].snippet.description.length > 100
-              ? response.data.items[0].snippet.description.slice(0, 100) +
-                "...."
-              : response.data.items[0].snippet.description;
-          this.description2 = response.data.items[0].snippet.description;
-          document.title = "History Makers | " + this.DataVideo.title;
-        });
+      this.LoadORWatchFuntion();
     },
   },
 };
@@ -534,7 +457,11 @@ export default {
   font-size: 30px;
 }
 .question {
-  opacity: 0;
+  display: none;
+}
+.Good {
+  background: var(--Good) !important;
+  border: 2px solid var(--Good) !important;
 }
 .Nono {
   position: relative;
@@ -625,8 +552,15 @@ export default {
   height: 100% !important;
   transform: translate(0, 0) !important;
   border-radius: 0 !important;
-  z-index: 4;
+  z-index: -1;
   display: block !important;
   box-shadow: none !important;
 }
+/* .ConTainer_YouTube .sectionVideo video,
+.ConTainer_YouTube .sectionVideo iframe,
+.ConTainer_YouTube .sectionVideo img {
+
+}
+.PlayListVideo {
+} */
 </style>

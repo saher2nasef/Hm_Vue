@@ -2,7 +2,19 @@
   <div class="ConTainer_YouTube">
     <section class="MainArea pt-3">
       <div class="w-100">
-        <h1 class="text-center pt-5 pb-5">Dashboard Admin</h1>
+        <h1
+          class="text-center pt-5 pb-5"
+          v-if="$store.state.Islogin && $store.state.The_State == 'Admin'"
+        >
+          Admin
+        </h1>
+        <h1
+          class="text-center pt-5 pb-5"
+          v-if="$store.state.Islogin && $store.state.The_State == 'User'"
+        >
+          User
+        </h1>
+        <h1 class="text-center pt-5 pb-5" v-if="!$store.state.Islogin">No</h1>
       </div>
     </section>
     <aside class="Options">

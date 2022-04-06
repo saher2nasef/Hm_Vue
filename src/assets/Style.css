@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap");
 /* Nice Scroll */
 
 .material-icons-outlined {
@@ -11,7 +11,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: .2s;
+  transition: 0.2s;
   font-family: var(--Font);
 }
 
@@ -24,239 +24,20 @@ body {
   --BackGroundColor2: #f9f9f9;
   --Color: #000;
   --ColorMain: #d83b3b;
-  --Search1: #EEE;
+  --Search1: #eee;
   --Search2: #000;
-  --Font: 'Almarai', sans-serif;
+  --Font: "Almarai", sans-serif;
+}
+
+.BoxShadow {
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
 
 .ConTainer {
   width: 100%;
 }
 
-.ConTainer header {
-  width: 100%;
-  height: 70px;
-  background: var(--BackGroundColor);
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  z-index: 10000;
-  border-bottom: 2px solid var(--BackGroundColor);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-}
 
-.ConTainer header .Left {
-  width: 22%;
-  height: 100%;
-  background: var(--BackGroundColor);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 20px;
-}
-
-.ConTainer header .Left>button.img {
-  width: 40px;
-  height: 40px;
-  position: relative;
-}
-
-.ConTainer header .Left>button.img>div {
-  width: 290px;
-  background: var(--BackGroundColor2);
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: -1000%;
-  top: 44px;
-  z-index: 222;
-}
-
-.ConTainer header .Left>button.img>div.active {
-  left: 0;
-}
-
-.ConTainer header .Left>button.img>div>div {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  direction: rtl;
-  margin: 10px 0;
-}
-
-.ConTainer header .Left>button.img>div>div img {
-  width: 50px;
-  height: 50px;
-  margin-left: 10px;
-}
-
-.ConTainer header .Left>button.img>div>div h6 {
-  font-size: 20px;
-}
-
-.ConTainer header .Left>button.img>div span {
-  background-color: var(--ColorMain);
-  color: var(--BackGroundColor);
-  padding: 8px;
-  width: 95%;
-  margin: 0px auto;
-  border-radius: 5px;
-}
-
-.ConTainer header .Left>button.img>div hr {
-  margin: 8px 0;
-}
-
-.ConTainer header .Left>button.img img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.ConTainer header .Left .search {
-  display: none;
-}
-
-.ConTainer header .Left>button,
-.ConTainer header>button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 18px;
-  border: 0;
-  background: transparent;
-  color: var(--Search2);
-  margin-right: 10px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ConTainer header .Center {
-  width: 60%;
-  height: 100%;
-  background-color: var(--BackGroundColor);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ConTainer header .Center .BarSearch {
-  width: 80%;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row-reverse;
-}
-
-.ConTainer header .Center .search {
-  transform: scale(0);
-}
-
-.ConTainer header .Center .BarSearch input {
-  width: calc(100% - 80px);
-  height: 95%;
-  padding: 0 10px;
-  transition: .3s;
-  border: 1px solid #ccc;
-  background-color: var(--BackGroundColor2);
-  color: var(--Search2);
-  opacity: .9;
-  outline: 0;
-  font-size: 17px;
-  font-weight: 900;
-  font-family: var(--Font);
-  font-weight: 500;
-}
-
-.ConTainer header .Center .BarSearch button {
-  width: 80px;
-  height: 95%;
-  font-size: 20px;
-  cursor: pointer;
-  transition: .3s;
-  background-color: var(--BackGroundColor2);
-  color: var(--Search2);
-  border: 1px solid #ccc;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ConTainer header .Center .BarSearch input:focus+button {
-  opacity: 1;
-}
-
-.ConTainer header .Center>button {
-  width: 50px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 20px;
-  border: 0;
-  background: var(--Search1);
-  color: var(--Search2);
-  margin-right: 10px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-/* .ConTainer header .Right */
-
-.ConTainer header .Right {
-  width: 18%;
-  height: 100%;
-  background-color: var(--BackGroundColor);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-left: 10px;
-}
-
-.ConTainer header .Right a {
-  width: 69px;
-  height: 55px;
-  display: inline-block;
-  position: relative;
-  right: 5px;
-  top: 1px;
-}
-
-.ConTainer header .Right a img {
-  width: 100%;
-  height: 100%;
-}
-
-.ConTainer header .Right button {
-  width: 80px;
-  height: 100%;
-  background: var(--BackGroundColor);
-  color: var(--Color);
-  font-size: 20px;
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Right button {
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /* Header */
 
@@ -296,10 +77,10 @@ body {
   flex-direction: column;
 }
 
-
 /* .ConTainer .ConTainer_YouTube .Options */
 
-.ConTainer .ConTainer_YouTube .Options a, .ConTainer .ConTainer_YouTube .Options button {
+.ConTainer .ConTainer_YouTube .Options a,
+.ConTainer .ConTainer_YouTube .Options button {
   width: 100%;
   height: 70px;
   background-color: var(--BackGroundColor);
@@ -308,24 +89,21 @@ body {
   justify-content: center;
   flex-direction: column;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   text-decoration: none;
   color: var(--Color);
   margin: 0 0 5px;
   border: 0;
 }
 
-
-
 .ConTainer .ConTainer_YouTube .Options a.router-link-exact-active {
-  background-color: #EEE;
+  background-color: #eee;
   color: var(--Color);
 }
 
-
 .ConTainer .ConTainer_YouTube .Options a:hover,
 .ConTainer .ConTainer_YouTube .Options button:hover {
-  background-color: #EEE;
+  background-color: #eee;
   color: var(--Color);
 }
 
@@ -340,12 +118,9 @@ body {
   fill: var(--Color);
 }
 
-
 /* .ConTainer .ConTainer_YouTube .Options */
 
-
 /* .ConTainer .ConTainer_YouTube .MainArea */
-
 
 .ConTainer .ConTainer_YouTube .MainArea a.videoShort {
   display: flex;
@@ -354,14 +129,14 @@ body {
   flex-direction: column;
   margin: 15px 5px;
   background-color: #000;
-  color: #FFF;
+  color: #fff;
   /* font-size: 30px; */
   position: relative;
 }
 
 .ConTainer .ConTainer_YouTube .MainArea a.videoShort img {
   width: 100%;
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .ConTainer .ConTainer_YouTube .MainArea a.videoShort span {
@@ -384,11 +159,8 @@ body {
   flex-direction: column;
   margin: 15px 5px;
   width: calc(96% / 4);
-  color: #FFF;
+  color: #fff;
 }
-
-
-
 
 .ConTainer .ConTainer_YouTube .MainArea a>div {
   display: flex;
@@ -427,11 +199,9 @@ body {
   padding: 14px;
 }
 
-
-
 /* .ConTainer .ConTainer_YouTube .MainArea */
 
-@media (max-width:882px) {
+@media (max-width: 882px) {
   .ConTainer .ConTainer_YouTube .Options {
     position: fixed;
     bottom: 0;
@@ -451,13 +221,13 @@ body {
   }
 }
 
-@media (min-width:1500px) {
+@media (min-width: 1500px) {
   .ConTainer .ConTainer_YouTube .MainArea a {
     width: calc(96% / 5);
   }
 }
 
-@media (min-width:2150px) {
+@media (min-width: 2150px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: 1570px;
     position: relative;
@@ -470,7 +240,7 @@ body {
   }
 }
 
-@media (max-width:1100px) {
+@media (max-width: 1100px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: calc(100% - 80px);
   }
@@ -488,7 +258,7 @@ body {
   }
 }
 
-@media (max-width:950px) {
+@media (max-width: 950px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: calc(100% - 80px);
   }
@@ -510,7 +280,7 @@ body {
   }
 }
 
-@media (max-width:842px) {
+@media (max-width: 842px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: 100%;
     justify-content: center;
@@ -533,14 +303,44 @@ body {
   }
 }
 
-@media (max-width:850px) and (min-width:800px) {
+@media (max-width: 850px) and (min-width: 800px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: calc(100% - 80px);
     justify-content: center;
   }
 }
 
-@media (max-width:650px) {
+@media (max-width: 790px) {
+  .ConTainer header .Center {
+    width: 40% !important;
+  }
+
+  .ConTainer header .Left {
+    width: 40% !important;
+  }
+
+}
+
+@media (max-width: 740px) {
+
+  .ConTainer header .Center .Search {
+    display: flex !important;
+  }
+
+  .ConTainer header .Center .BarSearch {
+    display: none !important;
+  }
+
+  .ConTainer header .Left {
+    width: 40% !important;
+  }
+
+  .ConTainer header .Center {
+    width: 40% !important;
+  }
+}
+
+@media (max-width: 650px) {
   .ConTainer .ConTainer_YouTube .MainArea {
     width: calc(100%);
     justify-content: center;
@@ -562,9 +362,7 @@ body {
     display: none;
   }
 
-  .ConTainer header .Left {
-    width: 40%;
-  }
+
 
   .ConTainer header .Right {
     width: 45%;
@@ -576,33 +374,32 @@ body {
     transform: scale(1);
   }
 
-  .ConTainer header .Left button,
-  .ConTainer header .Center button {
+  .ConTainer header .Left button.Btn,
+  .ConTainer header .Center button.Btn {
     margin-right: 10px !important;
     width: 40px;
     height: 40px;
     font-size: 18px;
   }
-
 }
 
-@media (max-width:520px) {
+@media (max-width: 530px) {
   .ConTainer header .Right {
-    width: 50%;
+    width: 25% !important;
     margin-left: auto;
     display: inline-flex;
   }
 
   .ConTainer header .Left {
-    width: 50%;
+    width: 45% !important;
   }
 
   .ConTainer header .Center {
-    display: none;
+    width: 30% !important;
   }
 
-  .ConTainer header .Left button,
-  .ConTainer header .Center button {
+  .ConTainer header .Left button.Btn,
+  .ConTainer header .Center button.Btn {
     margin-right: 10px !important;
     width: 30px;
     height: 30px;
@@ -623,5 +420,4 @@ body {
   .ConTainer header .Center .search {
     display: none;
   }
-
 }

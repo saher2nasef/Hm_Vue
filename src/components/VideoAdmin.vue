@@ -117,48 +117,50 @@ export default {
       this.Load(v);
     },
   },
-  created() {
-    if (localStorage.getItem("qusetions") == null) {
-      localStorage.setItem("qusetions", JSON.stringify([]));
-    }
-  },
   methods: {
+    GetDataFromToken(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      var jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+      return JSON.parse(jsonPayload);
+    },
     Add_Style_qusetion(Id_Video) {
       this.Class = "Prompt active";
       this.Id_Video = Id_Video;
       this.qusetion = "";
-      let qusetions = JSON.parse(localStorage.getItem("qusetions"));
-      for (let i = 0; i < qusetions.length; i++) {
-        if (qusetions[i].Id_Video == Id_Video) {
-          this.qusetion = qusetions[i].qusetion;
-        }
-      }
+      axios
+        .get(
+          `http://josephnasef-001-site1.ctempurl.com/api/Question/GetQuestion?VideoId=${Id_Video}&UserId`
+        )
+        .then((val) => {
+          this.qusetion = val.data.content;
+        });
     },
     Cancel() {
       this.qusetion = "";
       this.Class = "Prompt";
     },
     Add_qusetion() {
-      let qusetions = JSON.parse(localStorage.getItem("qusetions"));
       this.Class = "Prompt";
-      var id = "_" + Math.random().toString(36).substr(2, 9);
-      let qusetion = {
-        Id_Video: this.Id_Video,
-        Id_qusetion: id,
-        qusetion: this.qusetion,
-      };
-      if (qusetions.length == 0) {
-        qusetions.push(qusetion);
-        localStorage.setItem("qusetions", JSON.stringify(qusetions));
-      } else if (qusetions.length >= 1) {
-        for (let i = 0; i < qusetions.length; i++) {
-          if (qusetions[i].Id_Video != this.id) {
-            qusetions.push(qusetion);
-            localStorage.setItem("qusetions", JSON.stringify(qusetions));
-            break;
-          }
-        }
-      }
+      axios
+        .post("http://josephnasef-001-site1.ctempurl.com/api/Question", {
+          YoutubeListId: this.List,
+          VideoId: this.Id_Video,
+          Content: this.qusetion,
+          UserId: this.GetDataFromToken(this.$store.state.Token).Id,
+        })
+        .then((val) => {
+          console.log(val);
+          this.qusetion = "";
+          this.Class = "Prompt";
+        });
     },
     Load(ID) {
       let Id = ID;

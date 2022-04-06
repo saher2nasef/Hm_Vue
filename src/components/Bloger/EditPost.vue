@@ -12,7 +12,7 @@ export default {
   props: ["Id", "Text", "body"],
   methods: {
     EditPost() {
-      Bloger.EditPost(this.Id, this.Text, this.body, this.$store.state.IdUser);
+      Bloger.EditPost(this.Id, this.Text, this.body, this.$store.state.Token);
       setTimeout(() => {
         location.pathname = "Blog";
       }, 1000);

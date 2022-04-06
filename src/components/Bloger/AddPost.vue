@@ -85,9 +85,9 @@ export default {
       if (
         this.Title != "" &&
         this.describe != "" &&
-        this.$store.state.IdUser != ""
+        this.$store.state.Token != ""
       ) {
-        Bloger.AddPost(this.Title, this.describe, this.$store.state.IdUser);
+        Bloger.AddPost(this.Title, this.describe, this.$store.state.Token);
         setTimeout(() => {
           location.pathname = "Blog";
         }, 1000);

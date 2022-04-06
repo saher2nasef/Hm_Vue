@@ -1,102 +1,104 @@
 <template>
-  <form action="" method="POST" id="Form">
-    <h1>Rregister</h1>
+  <main class="Login">
+    <form action="" method="POST" id="Form">
+      <h1>Rregister</h1>
 
-    <ul
-      class="alert px-3 fs-6 text-capitalize text-center alert-danger list-unstyled"
-      v-for="Error in Errors"
-      :key="Error"
-    >
-      <li>{{ Error }}</li>
-    </ul>
+      <ul
+        class="alert px-3 fs-6 text-capitalize text-center alert-danger list-unstyled"
+        v-for="Error in Errors"
+        :key="Error"
+      >
+        <li>{{ Error }}</li>
+      </ul>
 
-    <div
-      class="alert fs-4 w-100 text-capitalize text-center alert-success"
-      v-if="Good"
-    >
-      {{ Good }}
-    </div>
-    <div class="Input_DIv">
-      <div>
-        <span>Email</span>
-        <p class="Error" v-if="Email.Email_Error">{{ Email.Email_Error }}</p>
-        <p class="Good" v-if="Email.Email_Good">{{ Email.Email_Good }}</p>
+      <div
+        class="alert fs-4 w-100 text-capitalize text-center alert-success"
+        v-if="Good"
+      >
+        {{ Good }}
       </div>
-      <div>
-        <input
-          type="Email"
-          @blur="Email_V_B"
-          ref="Email"
-          v-model="Email.Inner"
-          @keyup="Email_V_B"
-          required
-        />
+      <div class="Input_DIv">
+        <div>
+          <span>Email</span>
+          <p class="Error" v-if="Email.Email_Error">{{ Email.Email_Error }}</p>
+          <p class="Good" v-if="Email.Email_Good">{{ Email.Email_Good }}</p>
+        </div>
+        <div>
+          <input
+            type="Email"
+            @blur="Email_V_B"
+            ref="Email"
+            v-model="Email.Inner"
+            @keyup="Email_V_B"
+            required
+          />
+        </div>
+        <div class="text-denger"></div>
       </div>
-      <div class="text-denger"></div>
-    </div>
-    <div class="Input_DIv">
-      <div>
-        <span>Password</span>
-        <p class="Good" v-if="Password.Password_Good">
-          {{ Password.Password_Good }}
-        </p>
+      <div class="Input_DIv">
+        <div>
+          <span>Password</span>
+          <p class="Good" v-if="Password.Password_Good">
+            {{ Password.Password_Good }}
+          </p>
+        </div>
+        <div>
+          <input
+            type="password"
+            ref="Password"
+            v-model="Password.Inner"
+            @blur="Password_V_B"
+            @keyup="Password_V_B2"
+            required
+          />
+        </div>
+        <ul class="mt-2 Error" v-if="Password.Password_Error.length != 0">
+          <li v-for="(error, i) in Password.Password_Error" :key="'id' + i">
+            {{ error }}
+          </li>
+        </ul>
       </div>
-      <div>
+      <div class="Input_DIv">
+        <span>confirm password</span>
         <input
           type="password"
-          ref="Password"
-          v-model="Password.Inner"
-          @blur="Password_V_B"
-          @keyup="Password_V_B2"
+          class="confirm_password"
+          ref="confirm_password"
+          v-model="confirm_password.Inner"
           required
+          @blur="confirm_password_V_B"
+          @keyup="confirm_password_V_B"
         />
       </div>
-      <ul class="mt-2 Error" v-if="Password.Password_Error.length != 0">
-        <li v-for="(error, i) in Password.Password_Error" :key="'id' + i">
-          {{ error }}
-        </li>
-      </ul>
-    </div>
-    <div class="Input_DIv">
-      <span>confirm password</span>
-      <input
-        type="password"
-        class="confirm_password"
-        ref="confirm_password"
-        v-model="confirm_password.Inner"
-        required
-        @blur="confirm_password_V_B"
-        @keyup="confirm_password_V_B"
-      />
-    </div>
-    <div class="Input_DIv">
-      <span>Country</span>
-      <select class="input" v-model="Country">
-        <option
-          v-for="(Country, index) in Countries"
-          :key="index"
-          :value="Country.name"
-        >
-          {{ Country.name }}
-        </option>
-      </select>
-    </div>
-    <div class="Input_DIv">
-      <span>Age</span>
-      <input type="number" v-model="Age" />
-    </div>
+      <div class="Input_DIv">
+        <span>Country</span>
+        <select class="input" v-model="Country">
+          <option
+            v-for="(Country, index) in Countries"
+            :key="index"
+            :value="Country.name"
+          >
+            {{ Country.name }}
+          </option>
+        </select>
+      </div>
+      <div class="Input_DIv">
+        <span>Age</span>
+        <input type="number" v-model="Age" />
+      </div>
 
-    <p>
-      <router-link to="/Login">Login</router-link>
-    </p>
-    <button
-      @click="Register"
-      class="btn btn-primary fs-4 px-5 pt-1 pb-1"
-      type="button"
-    >
-      Register
-    </button>
-  </form>
+      <p>
+        <router-link to="/Login">Login</router-link>
+      </p>
+      <button
+        @click="Register"
+        class="btn btn-primary fs-4 px-5 pt-1 pb-1"
+        type="button"
+      >
+        Register
+      </button>
+    </form>
+  </main>
 </template>
 <script>
 import identity from "./identity";

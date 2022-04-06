@@ -13,36 +13,27 @@ export default {
     NaBar,
   },
   created() {
-    function getCookie(cName) {
-      const name = cName + "=";
-      const cDecoded = decodeURIComponent(document.cookie); //to be careful
-      const cArr = cDecoded.split("; ");
-      let res;
-      cArr.forEach((val) => {
-        if (val.indexOf(name) === 0) res = val.substring(name.length);
-      });
-      return res;
-    }
-    if (getCookie("Id") != undefined && getCookie("The_State") != undefined) {
-      this.$store.state.Token = getCookie("Id");
-      if (getCookie("Id") != "" && getCookie("The_State") != "") {
+    if (
+      localStorage.getItem("The_State") != null &&
+      localStorage.getItem("Token") != null
+    ) {
+      if (
+        localStorage.getItem("The_State") != "" &&
+        localStorage.getItem("Token") != ""
+      ) {
         this.$store.state.Islogin = true;
-        this.$store.state.The_State = getCookie("The_State");
-      }
-      if (getCookie("Id") == "" && getCookie("The_State") == "") {
+        this.$store.state.The_State = localStorage.getItem("The_State");
+        this.$store.state.Token = localStorage.getItem("Token");
+      } else {
         this.$store.state.Islogin = false;
         this.$store.state.The_State = "User";
+        this.$store.state.Token = "";
       }
     } else {
-      document.cookie = "Id=";
-      document.cookie = "The_State=";
-      this.$store.state.Islogin = false;
-      this.$store.state.The_State = "User";
+      localStorage.setItem("The_State", "");
+      localStorage.setItem("Token", "");
     }
     document.title = "History Makers";
-    document.head.innerHTML +=
-      '<link rel="icon" href="' + require(`@/assets/images/Youtube.png`) + '">';
-    //
   },
 };
 </script>

@@ -32,6 +32,7 @@
   "Video": {
     "QuestionsNo": "There are no questions for this video yet",
     "AddQuestion": "Add Question",
-    "BtnAnswer": "Answer to watch the next lesson"
+    "BtnAnswer": "Answer to watch the next lesson",
+    "AddAnswer": "Add Answer"
   }
 }

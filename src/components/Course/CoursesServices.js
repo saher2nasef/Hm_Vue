@@ -15,7 +15,11 @@ export default class CoursesServices {
     return JSON.parse(jsonPayload);
   }
   static AddCourse(PlayListUrl, Title, Token) {
-    let IdUser = this.GetDataFromToken(Token);
+    let IdUser;
+    console.log(Token != "");
+    if (Token != "") {
+      IdUser = this.GetDataFromToken(Token);
+    }
 
     axios
       .post(Url, {
@@ -92,22 +96,9 @@ export default class CoursesServices {
   }
   static GetVideosCourse(ID, Token) {
     let PlayListId = "";
-
-    // axios
-    //   .get(Url + ID, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     Watch = response.data;
-    //   });
-
     return axios.get(Url + ID).then((response) => {
       PlayListId = response.data.youtubeListId;
-
       let This = this;
-      console.log(This);
       return axios
         .get(
           `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PlayListId}&maxResults=50&key=AIzaSyDQC22h6ObkClkL_7pzmPkOS2hi3-wkENo`
@@ -128,26 +119,77 @@ export default class CoursesServices {
               }
             }
           }
-          let Watch;
-          This.GetVideoswatched(
-            This.GetDataFromToken(Token).Id,
+
+          return This.GetVideoswatched(
+            Token != "" ? This.GetDataFromToken(Token).Id : "No",
             PlayListId
-          ).then((Val) => {
-            if (Val.error != undefined) {
-              Watch = {
-                Videos: [
-                  {
-                    Id: "6QAELgirvjs",
-                    Answer: "2",
-                  },
-                ],
+          )
+            .then((Val) => {
+              let Watch = {
+                Videos: [],
               };
-            }
-          });
-          let lenght = Watch.Videos.length;
-          if (Watch.Videos[Watch.Videos.length - 1] != undefined) {
-            if (Watch.Videos[Watch.Videos.length - 1].Answer != "") {
-              console.log("Log 1");
+              let VideosWatchLength = 0;
+              for (let i = 0; i < Val.length; i++) {
+                Watch.Videos.push(Val[i]);
+              }
+              for (let i = 0; i < Watch.Videos.length; i++) {
+                if (
+                  Watch.Videos[i].videoId ===
+                  Response.data.items[i].snippet.resourceId.videoId
+                ) {
+                  if (Watch.Videos[i].questionId != 0) {
+                    if (Watch.Videos[i].isAnsweared) {
+                      VideosWatchLength++;
+                    }
+                  } else {
+                    VideosWatchLength++;
+                  }
+                }
+              }
+              return {
+                Vidoes: Response.data.items.slice(
+                  VideosWatchLength + 1,
+                  Response.data.items.length
+                ),
+                VidoesWatched: Response.data.items.slice(
+                  0,
+                  VideosWatchLength + 1
+                ),
+              };
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+    });
+  }
+}
+/*
+            if (Watch.Videos[Watch.Videos.length - 1] != undefined) {
+              if (Watch.Videos[Watch.Videos.length - 1].Answer != "") {
+                console.log("Log 1");
+                let Vidoes = Response.data.items.slice(
+                  lenght + 1,
+                  Response.data.items.length
+                );
+                console.log(Response.data.items.slice(0, lenght + 1));
+                return {
+                  Vidoes: Response.data.items.slice(lenght + 1, Vidoes.length),
+                  VidoesWatched: Response.data.items.slice(0, lenght + 1),
+                };
+              } else {
+                console.log("Log 2");
+                let Vidoes = Response.data.items.slice(
+                  lenght,
+                  Response.data.items.length
+                );
+                return {
+                  Vidoes: Response.data.items.slice(lenght, Vidoes.length),
+                  VidoesWatched: Response.data.items.slice(0, lenght),
+                };
+              }
+            } else {
+              console.log("Log 3");
               let Vidoes = Response.data.items.slice(
                 lenght + 1,
                 Response.data.items.length
@@ -156,29 +198,4 @@ export default class CoursesServices {
                 Vidoes: Response.data.items.slice(lenght + 1, Vidoes.length),
                 VidoesWatched: Response.data.items.slice(0, lenght + 1),
               };
-            } else {
-              console.log("Log 2");
-              let Vidoes = Response.data.items.slice(
-                lenght,
-                Response.data.items.length
-              );
-              return {
-                Vidoes: Response.data.items.slice(lenght, Vidoes.length),
-                VidoesWatched: Response.data.items.slice(0, lenght),
-              };
-            }
-          } else {
-            console.log("Log 3");
-            let Vidoes = Response.data.items.slice(
-              lenght + 1,
-              Response.data.items.length
-            );
-            return {
-              Vidoes: Response.data.items.slice(lenght + 1, Vidoes.length),
-              VidoesWatched: Response.data.items.slice(0, lenght + 1),
-            };
-          }
-        });
-    });
-  }
-}
+            }*/
